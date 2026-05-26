@@ -48,7 +48,7 @@ def calculate_ltv(
     if eligible_collateral_value <= 0:
         raise ValueError("Eligible collateral value must be positive")
 
-    return loan_amount / eligible_collateral_value
+    return (loan_amount / eligible_collateral_value).quantize(Decimal("0.0001"))
 
 
 def assess_loan_risk(

@@ -187,3 +187,60 @@ class TestAssessLoanRisk:
         assert result["eligible_collateral_value"] == eligible
         # Check LTV is calculated with Decimal precision
         assert isinstance(result["ltv"], Decimal)
+
+    def test_healthy_with_large_numbers(self):
+        """Test healthy status with large loan amounts: loan 500000, collateral 2000000, haircut 0.20 => LTV 0.3125."""
+        result = assess_loan_risk(
+            loan_amount=Decimal("500000.00"),
+            collateral_market_value=Decimal("2000000.00"),
+            haircut_percentage=Decimal("0.20"),
+        )
+        # eligible = 2000000 * (1 - 0.20) = 1600000
+        # ltv = 500000 / 1600000 = 0.3125
+        assert result["eligible_collateral_value"] == Decimal("1600000.00")
+        assert result["ltv"] == Decimal("0.3125")
+        assert result["status"] == "healthy"
+
+    def test_warning_with_large_numbers(self):
+        """Test warning status with large loan amounts: loan 1000000, collateral 2000000, haircut 0.20 => LTV 0.6250."""
+        result = assess_loan_risk(
+            loan_amount=Decimal("1000000.00"),
+            collateral_market_value=Decimal("2000000.00"),
+            haircut_percentage=Decimal("0.20"),
+        )
+        # eligible = 2000000 * (1 - 0.20) = 1600000
+        # ltv = 1000000 / 1600000 = 0.6250
+        assert result["eligible_collateral_value"] == Decimal("1600000.00")
+        assert result["ltv"] == Decimal("0.6250")
+        assert result["status"] == "warning"
+
+    def test_breach_with_large_numbers(self):
+        """Test breach status with large loan amounts: loan 1200000, collateral 2000000, haircut 0.20 => LTV 0.7500."""
+        result = assess_loan_risk(
+            loan_amount=Decimal("1200000.00"),
+            collateral_market_value=Decimal("2000000.00"),
+            haircut_percentage=Decimal("0.20"),
+        )
+        # eligible = 2000000 * (1 - 0.20) = 1600000
+        # ltv = 1200000 / 1600000 = 0.7500
+        assert result["eligible_collateral_value"] == Decimal("1600000.00")
+        assert result["ltv"] == Decimal("0.7500")
+        assert result["status"] == "breach"
+
+    def test_invalid_zero_collateral_market_value(self):
+        """Test that zero collateral_market_value raises ValueError."""
+        with pytest.raises(ValueError, match="Eligible collateral value must be positive"):
+            assess_loan_risk(
+                loan_amount=Decimal("500000.00"),
+                collateral_market_value=Decimal("0.00"),
+                haircut_percentage=Decimal("0.20"),
+            )
+
+    def test_invalid_full_haircut_raises_error(self):
+        """Test that 100% haircut raises ValueError because eligible collateral becomes zero."""
+        with pytest.raises(ValueError, match="Eligible collateral value must be positive"):
+            assess_loan_risk(
+                loan_amount=Decimal("500000.00"),
+                collateral_market_value=Decimal("2000000.00"),
+                haircut_percentage=Decimal("1.00"),
+            )
