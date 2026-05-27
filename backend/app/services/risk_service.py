@@ -95,3 +95,67 @@ def assess_loan_risk(
         "ltv": ltv,
         "status": status,
     }
+
+
+def assess_loan_risk_with_collateral(
+    loan: dict,
+    collateral_items: list,
+    warning_ltv_threshold: Decimal = Decimal("0.60"),
+    breach_ltv_threshold: Decimal = Decimal("0.70"),
+) -> dict:
+    """
+    Assess loan risk based on LTV using collateral items.
+
+    Args:
+        loan: Loan dictionary with amount and currency
+        collateral_items: List of collateral dictionaries for the loan
+        warning_ltv_threshold: LTV threshold for warning (default 0.60)
+        breach_ltv_threshold: LTV threshold for breach (default 0.70)
+
+    Returns:
+        Dictionary with:
+            - loan_id: Loan ID
+            - loan_amount: Loan amount
+            - total_market_value: Sum of all collateral market values
+            - total_eligible_collateral_value: Sum of eligible collateral after haircuts
+            - ltv: Loan-to-Value ratio
+            - status: "healthy", "warning", or "breach"
+            - collateral_count: Number of collateral items
+
+    Raises:
+        ValueError: If no collateral or invalid collateral data
+    """
+    if not collateral_items:
+        raise ValueError("Loan has no collateral")
+
+    loan_amount = loan["amount"]
+    total_market_value = Decimal("0")
+    total_eligible_value = Decimal("0")
+
+    for collateral in collateral_items:
+        market_value = collateral["market_value"]
+        haircut = collateral["haircut_percentage"]
+
+        total_market_value += market_value
+        eligible = calculate_eligible_collateral_value(market_value, haircut)
+        total_eligible_value += eligible
+
+    ltv = calculate_ltv(loan_amount, total_eligible_value)
+
+    # Determine status
+    if ltv < warning_ltv_threshold:
+        status = "healthy"
+    elif ltv < breach_ltv_threshold:
+        status = "warning"
+    else:
+        status = "breach"
+
+    return {
+        "loan_id": loan["id"],
+        "loan_amount": loan_amount,
+        "total_market_value": total_market_value,
+        "total_eligible_collateral_value": total_eligible_value,
+        "ltv": ltv,
+        "status": status,
+        "collateral_count": len(collateral_items),
+    }
