@@ -1,12 +1,18 @@
 """FastAPI application for AI-assisted lending platform."""
 
-from decimal import Decimal
 from fastapi import FastAPI
 
 from .schemas.risk import LTVCalculationRequest, LTVCalculationResponse, RiskAssessmentRequest, RiskAssessmentResponse
 from .services.risk_service import assess_loan_risk
+from .api import clients, books, loans, collateral
 
 app = FastAPI(title="Eternal Lending Platform", version="0.1.0")
+
+# Include API routers
+app.include_router(clients.router)
+app.include_router(books.router)
+app.include_router(loans.router)
+app.include_router(collateral.router)
 
 
 @app.get("/health")
@@ -50,34 +56,20 @@ async def calculate_ltv_endpoint(request: LTVCalculationRequest) -> LTVCalculati
     Returns:
         LTV calculation response with eligible collateral and LTV
     """
-    eligible_collateral_value = assess_loan_risk(
+    result = assess_loan_risk(
         loan_amount=request.loan_amount,
         collateral_market_value=request.collateral_market_value,
         haircut_percentage=request.haircut_percentage,
         warning_ltv_threshold=request.warning_ltv_threshold,
         breach_ltv_threshold=request.breach_ltv_threshold,
-    )["eligible_collateral_value"]
-
-    ltv = assess_loan_risk(
-        loan_amount=request.loan_amount,
-        collateral_market_value=request.collateral_market_value,
-        haircut_percentage=request.haircut_percentage,
-        warning_ltv_threshold=request.warning_ltv_threshold,
-        breach_ltv_threshold=request.breach_ltv_threshold,
-    )["ltv"]
+    )
 
     return LTVCalculationResponse(
-        eligible_collateral_value=eligible_collateral_value,
-        ltv=ltv,
+        eligible_collateral_value=result["eligible_collateral_value"],
+        ltv=result["ltv"],
         loan_amount=request.loan_amount,
         collateral_market_value=request.collateral_market_value,
         haircut_percentage=request.haircut_percentage,
-        status=assess_loan_risk(
-            loan_amount=request.loan_amount,
-            collateral_market_value=request.collateral_market_value,
-            haircut_percentage=request.haircut_percentage,
-            warning_ltv_threshold=request.warning_ltv_threshold,
-            breach_ltv_threshold=request.breach_ltv_threshold,
-        )["status"]
+        status=result["status"]
     )
 
