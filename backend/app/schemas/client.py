@@ -1,5 +1,6 @@
 """Pydantic schemas for Client API."""
 
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
@@ -14,7 +15,7 @@ class ClientRequest(BaseModel):
 class ClientResponse(BaseModel):
     """Schema for reading client data."""
 
-    id: str = Field(..., description="Unique client ID")
+    id: UUID = Field(..., description="Unique client ID")
     name: str = Field(..., description="Client name")
     country: str = Field(..., description="Country code or name")
     risk_rating: str = Field(..., description="Risk rating")

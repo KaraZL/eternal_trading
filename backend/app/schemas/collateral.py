@@ -1,6 +1,7 @@
 """Pydantic schemas for Collateral API."""
 
 from decimal import Decimal
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
@@ -11,7 +12,7 @@ class CollateralRequest(BaseModel):
     For example, 0.10 means 10% haircut, so eligible value = market_value * (1 - 0.10).
     """
 
-    loan_id: str = Field(..., min_length=1, description="ID of the associated loan")
+    loan_id: UUID = Field(..., description="ID of the associated loan")
     asset_type: str = Field(..., min_length=1, max_length=100, description="Type of asset (e.g., Stock, Bond)")
     asset_name: str = Field(..., min_length=1, max_length=255, description="Name or description of the asset")
     market_value: Decimal = Field(..., gt=0, decimal_places=2, description="Current market value of the asset")
@@ -22,8 +23,8 @@ class CollateralRequest(BaseModel):
 class CollateralResponse(BaseModel):
     """Schema for reading collateral data."""
 
-    id: str = Field(..., description="Unique collateral ID")
-    loan_id: str = Field(..., description="ID of the associated loan")
+    id: UUID = Field(..., description="Unique collateral ID")
+    loan_id: UUID = Field(..., description="ID of the associated loan")
     asset_type: str = Field(..., description="Type of asset")
     asset_name: str = Field(..., description="Name or description of the asset")
     market_value: Decimal = Field(..., description="Current market value of the asset")

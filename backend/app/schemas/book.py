@@ -1,5 +1,6 @@
 """Pydantic schemas for Book API."""
 
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
@@ -13,7 +14,7 @@ class BookRequest(BaseModel):
 class BookResponse(BaseModel):
     """Schema for reading book data."""
 
-    id: str = Field(..., description="Unique book ID")
+    id: UUID = Field(..., description="Unique book ID")
     name: str = Field(..., description="Book name")
     currency: str = Field(..., description="Currency code (e.g., USD)")
 
