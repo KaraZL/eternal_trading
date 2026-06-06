@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Column, String
+from sqlalchemy import Column, String
 from app.db.base import Base
 
 class Collateral(Base):
