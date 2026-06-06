@@ -14,6 +14,7 @@ Type checking avoid copilot to ask for import of Client, Book, Collateral in the
 '''
 
 class Loan(Base):
+    """Represents a loan in the system, with relationships to the Client, Book, and Collateral models."""
     __tablename__ = "loans"
 
     id: Mapped[str] = mapped_column(String, primary_key=True, index=True)
