@@ -3,13 +3,13 @@
 from fastapi import APIRouter, HTTPException
 
 from ..db.store import clients, generate_id
-from ..schemas.client import ClientCreate, ClientResponse
+from ..schemas.client import ClientRequest, ClientResponse
 
 router = APIRouter(prefix="/api/clients", tags=["clients"])
 
 
 @router.post("", response_model=ClientResponse)
-async def create_client(request: ClientCreate) -> ClientResponse:
+async def create_client(request: ClientRequest) -> ClientResponse:
     """Create a new client."""
     client_id = generate_id("client", clients)
     client = {

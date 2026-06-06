@@ -3,13 +3,13 @@
 from fastapi import APIRouter
 
 from ..db.store import collateral_list, generate_id
-from ..schemas.collateral import CollateralCreate, CollateralResponse
+from ..schemas.collateral import CollateralRequest, CollateralResponse
 
 router = APIRouter(prefix="/api/collateral", tags=["collateral"])
 
 
 @router.post("", response_model=CollateralResponse)
-async def add_collateral(request: CollateralCreate) -> CollateralResponse:
+async def add_collateral(request: CollateralRequest) -> CollateralResponse:
     """Add collateral to a loan."""
     collateral_id = generate_id("collateral", collateral_list)
     collateral = {

@@ -3,13 +3,13 @@
 from fastapi import APIRouter
 
 from ..db.store import books, generate_id
-from ..schemas.book import BookCreate, BookResponse
+from ..schemas.book import BookRequest, BookResponse
 
 router = APIRouter(prefix="/api/books", tags=["books"])
 
 
 @router.post("", response_model=BookResponse)
-async def create_book(request: BookCreate) -> BookResponse:
+async def create_book(request: BookRequest) -> BookResponse:
     """Create a new book."""
     book_id = generate_id("book", books)
     book = {

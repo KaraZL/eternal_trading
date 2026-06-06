@@ -3,14 +3,14 @@
 from fastapi import APIRouter, HTTPException
 
 from ..db.store import loans, generate_id, collateral_list
-from ..schemas.loan import LoanCreate, LoanResponse
+from ..schemas.loan import LoanRequest, LoanResponse
 from ..services.risk_service import assess_loan_risk_with_collateral
 
 router = APIRouter(prefix="/api/loans", tags=["loans"])
 
 
 @router.post("", response_model=LoanResponse)
-async def create_loan(request: LoanCreate) -> LoanResponse:
+async def create_loan(request: LoanRequest) -> LoanResponse:
     """Create a new loan."""
     loan_id = generate_id("loan", loans)
     loan = {

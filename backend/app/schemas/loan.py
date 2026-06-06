@@ -4,25 +4,23 @@ from decimal import Decimal
 from pydantic import BaseModel, Field
 
 
-class LoanBase(BaseModel):
-    """Base loan schema."""
-
-    client_id: str = Field(..., min_length=1)
-    book_id: str = Field(..., min_length=1)
-    amount: Decimal = Field(..., gt=0, decimal_places=2)
-    currency: str = Field(..., min_length=3, max_length=3)
-
-
-class LoanCreate(LoanBase):
+class LoanRequest(BaseModel):
     """Schema for creating a loan."""
 
-    pass
+    client_id: str = Field(..., min_length=1, description="ID of the borrower client")
+    book_id: str = Field(..., min_length=1, description="ID of the portfolio book")
+    amount: Decimal = Field(..., gt=0, decimal_places=2, description="Loan amount")
+    currency: str = Field(..., min_length=3, max_length=3, description="Currency code (e.g., USD)")
 
 
-class LoanResponse(LoanBase):
-    """Schema for loan response."""
+class LoanResponse(BaseModel):
+    """Schema for reading loan data."""
 
-    id: str
+    id: str = Field(..., description="Unique loan ID")
+    client_id: str = Field(..., description="ID of the borrower client")
+    book_id: str = Field(..., description="ID of the portfolio book")
+    amount: Decimal = Field(..., description="Loan amount")
+    currency: str = Field(..., description="Currency code (e.g., USD)")
 
     class Config:
         from_attributes = True

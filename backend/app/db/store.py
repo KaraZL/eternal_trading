@@ -7,6 +7,7 @@ clients: Dict[str, dict] = {}
 books: Dict[str, dict] = {}
 loans: Dict[str, dict] = {}
 collateral_list: List[dict] = []
+risk_assessments: List[dict] = []
 
 
 def generate_id(prefix: str, collection: Dict | List) -> str:
