@@ -1,28 +1,31 @@
 """Client API routes."""
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
-from ..db.store import clients, generate_id
-from ..schemas.client import ClientCreate, ClientResponse
+from ..db.database import get_db
+from ..schemas.client import ClientRequest, ClientResponse
+from ..services.client_service import create_client, get_client, list_clients
 
 router = APIRouter(prefix="/api/clients", tags=["clients"])
 
 
 @router.post("", response_model=ClientResponse)
-async def create_client(request: ClientCreate) -> ClientResponse:
+async def create_client_route(request: ClientRequest, db: Session = Depends(get_db)) -> ClientResponse:
     """Create a new client."""
-    client_id = generate_id("client", clients)
-    client = {
-        "id": client_id,
-        "name": request.name,
-        "country": request.country,
-        "risk_rating": request.risk_rating,
-    }
-    clients[client_id] = client
-    return ClientResponse(**client)
+    return create_client(db, request)
 
 
 @router.get("", response_model=list[ClientResponse])
-async def list_clients() -> list[ClientResponse]:
+async def list_clients_route(db: Session = Depends(get_db)) -> list[ClientResponse]:
     """List all clients."""
-    return [ClientResponse(**client) for client in clients.values()]
+    return list_clients(db)
+
+
+@router.get("/{client_id}", response_model=ClientResponse)
+async def get_client_route(client_id: str, db: Session = Depends(get_db)) -> ClientResponse:
+    """Get a client by ID."""
+    client = get_client(db, client_id)
+    if client is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client

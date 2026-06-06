@@ -1,26 +1,24 @@
 """Pydantic schemas for Client API."""
 
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
-class ClientBase(BaseModel):
-    """Base client schema."""
-
-    name: str = Field(..., min_length=1, max_length=255)
-    country: str = Field(..., min_length=1, max_length=100)
-    risk_rating: str = Field(..., min_length=1, max_length=50)
-
-
-class ClientCreate(ClientBase):
+class ClientRequest(BaseModel):
     """Schema for creating a client."""
 
-    pass
+    name: str = Field(..., min_length=1, max_length=255, description="Client name")
+    country: str = Field(..., min_length=1, max_length=100, description="Country code or name")
+    risk_rating: str = Field(..., min_length=1, max_length=50, description="Risk rating")
 
 
-class ClientResponse(ClientBase):
-    """Schema for client response."""
+class ClientResponse(BaseModel):
+    """Schema for reading client data."""
 
-    id: str
+    id: UUID = Field(..., description="Unique client ID")
+    name: str = Field(..., description="Client name")
+    country: str = Field(..., description="Country code or name")
+    risk_rating: str = Field(..., description="Risk rating")
 
     class Config:
         from_attributes = True
