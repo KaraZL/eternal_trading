@@ -8,7 +8,7 @@ from ..schemas.loan import LoanRequest, LoanResponse
 from ..services.loan_service import create_loan, get_loan, list_loans
 from ..services.risk_service import assess_loan_risk_with_collateral
 
-router = APIRouter(prefix="/api/loans", tags=["loans"])
+router = APIRouter()
 
 
 @router.post("", response_model=LoanResponse)

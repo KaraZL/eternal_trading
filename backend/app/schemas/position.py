@@ -19,3 +19,7 @@ class PositionResponse(BaseModel):
     quantity: Decimal = Field(..., gt=0)
     market_price: Decimal = Field(..., gt=0)
     currency: str = Field(..., min_length=3, max_length=3)
+    market_value: Optional[Decimal]
+
+    class Config:
+        from_attributes = True

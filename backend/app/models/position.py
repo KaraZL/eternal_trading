@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from app.models.book import Book
 
 class Position(Base):
-    __tablename__: "positions"
+    __tablename__ = "positions"
 
     id: Mapped[UUID] = mapped_column(UUID, primary_key=True, index=True, default=uuid4)
     book_id: Mapped[UUID] = mapped_column(UUID, ForeignKey("books.id"), nullable=False)
@@ -19,4 +19,4 @@ class Position(Base):
     market_price: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=4), nullable=False)
     currency: Mapped[str] = mapped_column(String, nullable=False)
 
-    book: Mapped["Book"] = relationship("Book", back_populates="position")
+    book: Mapped["Book"] = relationship("Book", back_populates="positions")

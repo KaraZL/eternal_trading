@@ -11,7 +11,6 @@ class TradeOrderRequest(BaseModel):
     quantity: Decimal = Field(...)
     limit_price: Decimal = Field(...)
     currency: str = Field(...)
-    status: str = Field(...)
 
 class TradeOrderResponse(BaseModel):
     id: Optional[UUID] = Field()
@@ -23,4 +22,7 @@ class TradeOrderResponse(BaseModel):
     limit_price: Decimal = Field(...)
     currency: str = Field(...)
     status: str = Field(...)
+
+    class Config:
+        from_attributes = True
 

@@ -9,10 +9,10 @@ if TYPE_CHECKING:
     from app.models.book import Book
 
 class TradeOrder(Base):
-    __tablename__: "trade_orders"
+    __tablename__ = "trade_orders"
 
     id: Mapped[UUID] = mapped_column(UUID, primary_key=True, index=True, default=uuid4)
-    book_id: Mapped[UUID] = mapped_column(UUID, ForeignKey("Books.id"), nullable=False)
+    book_id: Mapped[UUID] = mapped_column(UUID, ForeignKey("books.id"), nullable=False)
     side: Mapped[str] = mapped_column(String, nullable=False)
     asset_type: Mapped[str] = mapped_column(String, nullable=False)
     asset_name: Mapped[str] = mapped_column(String, nullable=False)
@@ -21,4 +21,4 @@ class TradeOrder(Base):
     currency: Mapped[str] = mapped_column(String, nullable=False)
     status: Mapped[str] = mapped_column(String, nullable=False)
 
-    book: Mapped["Book"] = relationship("Book", back_populates="trade_order")
+    book: Mapped["Book"] = relationship("Book", back_populates="trade_orders")

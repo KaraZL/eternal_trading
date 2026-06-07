@@ -1,5 +1,5 @@
 from uuid import uuid4
-from sqlalchemy import String, UUID, Column
+from sqlalchemy import String, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 from app.db.base import Base
@@ -17,6 +17,6 @@ class Book(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     currency: Mapped[str] = mapped_column(String, nullable=False)
 
-    loan: Mapped[list["Loan"]] = relationship("Loan", back_populates="book")
-    position: Mapped[list["Position"]] = relationship("Position", back_populates="book")
+    loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="book")
+    positions: Mapped[list["Position"]] = relationship("Position", back_populates="book")
     trade_orders: Mapped[list["TradeOrder"]] = relationship("TradeOrder", back_populates="book")

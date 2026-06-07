@@ -12,7 +12,7 @@ from ..services.collateral_service import (
     list_collateral_by_loan,
 )
 
-router = APIRouter(prefix="/api/collateral", tags=["collateral"])
+router = APIRouter()
 
 
 @router.post("", response_model=CollateralResponse)

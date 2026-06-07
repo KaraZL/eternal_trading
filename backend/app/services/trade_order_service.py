@@ -12,7 +12,7 @@ def create_trade_order(db: Session, trade_order: TradeOrderRequest) -> TradeOrde
         quantity=trade_order.quantity,
         limit_price=trade_order.limit_price,
         currency=trade_order.currency,
-        status=trade_order.status
+        status="pending"
     )
     db.add(db_trade_order)
     db.commit()

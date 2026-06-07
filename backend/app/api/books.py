@@ -9,7 +9,7 @@ from ..schemas.trade_order import TradeOrderResponse
 from ..services.book_service import create_book, get_book, list_books
 from ..services.trade_order_service import list_all_trade_order_by_book
 
-router = APIRouter(prefix="/api/books", tags=["books"])
+router = APIRouter()
 
 
 @router.post("", response_model=BookResponse)

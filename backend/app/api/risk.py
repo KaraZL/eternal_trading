@@ -5,7 +5,7 @@ from ..schemas.risk import LTVCalculationRequest, LTVCalculationResponse, RiskAs
 from ..services.risk_service import assess_loan_risk
 from ..db.store import risk_assessments
 
-router = APIRouter(prefix="/api/risk", tags=["risk"])
+router = APIRouter()
 
 @router.post("/assess", response_model=RiskAssessmentResponse)
 async def assess_risk(request: RiskAssessmentRequest) -> RiskAssessmentResponse:

@@ -7,7 +7,7 @@ from ..db.database import get_db
 from ..schemas.client import ClientRequest, ClientResponse
 from ..services.client_service import create_client, get_client, list_clients
 
-router = APIRouter(prefix="/api/clients", tags=["clients"])
+router = APIRouter()
 
 
 @router.post("", response_model=ClientResponse)
