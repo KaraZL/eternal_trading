@@ -74,3 +74,6 @@ def list_collateral_by_loan(db: Session, loan_id: str) -> list[CollateralRespons
     """
     db_collateral = db.query(Collateral).filter(Collateral.loan_id == loan_id).all()
     return [CollateralResponse.model_validate(c) for c in db_collateral]
+
+def _to_collateral_response(collateral: Collateral) -> CollateralResponse:
+    return CollateralResponse.model_validate(collateral)

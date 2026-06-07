@@ -1,7 +1,7 @@
 """Pydantic schemas for Client API."""
 
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ClientRequest(BaseModel):
@@ -20,5 +20,4 @@ class ClientResponse(BaseModel):
     country: str = Field(..., description="Country code or name")
     risk_rating: str = Field(..., description="Risk rating")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

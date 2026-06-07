@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CollateralRequest(BaseModel):
@@ -29,7 +29,19 @@ class CollateralResponse(BaseModel):
     asset_name: str = Field(..., description="Name or description of the asset")
     market_value: Decimal = Field(..., description="Current market value of the asset")
     currency: str = Field(..., description="Currency code")
-    haircut_percentage: Decimal = Field(..., description="Haircut percentage (0.0 to 1.0)")
+    haircut_percentage: Decimal = Field(..., description="Haircut percentage (0.0 to 1.0)", validation_alias="haircut")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_schema_extra={
+            "example": {
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "loan_id": "9c93a975-c60f-47ab-9a85-105eef76dc86",
+                "asset_type": "equity",
+                "asset_name": "Nestle shares",
+                "market_value": "2000000.00",
+                "currency": "CHF",
+                "haircut_percentage": "0.20",
+            }
+        },
+    )

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class TradeOrderRequest(BaseModel):
@@ -23,6 +23,5 @@ class TradeOrderResponse(BaseModel):
     currency: str = Field(...)
     status: str = Field(...)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 

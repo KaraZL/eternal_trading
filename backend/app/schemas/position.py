@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class PositionRequest(BaseModel):
     book_id: UUID = Field(...)
@@ -21,5 +21,4 @@ class PositionResponse(BaseModel):
     currency: str = Field(..., min_length=3, max_length=3)
     market_value: Optional[Decimal]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

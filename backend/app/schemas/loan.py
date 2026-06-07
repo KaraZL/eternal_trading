@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LoanRequest(BaseModel):
@@ -23,5 +23,4 @@ class LoanResponse(BaseModel):
     amount: Decimal = Field(..., description="Loan amount")
     currency: str = Field(..., description="Currency code (e.g., USD)")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
