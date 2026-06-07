@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 
 def create_trade_order(db: Session, trade_order: TradeOrderRequest) -> TradeOrderResponse:
     db_trade_order = TradeOrder(
-        id=None,
         book_id=trade_order.book_id,
         side=trade_order.side,
         asset_type=trade_order.asset_type,

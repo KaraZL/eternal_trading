@@ -24,9 +24,9 @@ class Loan(Base):
     amount: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=2), nullable=False)
     currency: Mapped[str] = mapped_column(String, nullable=False)
 
-    client: Mapped["Client"] = relationship("Client", back_populates="loan")
-    book: Mapped["Book"] = relationship("Book", back_populates="loan")
-    collateral_items: Mapped[list["Collateral"]] = relationship("Collateral", back_populates="loan", cascade="all, delete-orphan")
+    client: Mapped["Client"] = relationship("Client", back_populates="loans")
+    book: Mapped["Book"] = relationship("Book", back_populates="loans")
+    collateral_items: Mapped[list["Collateral"]] = relationship("Collateral", back_populates="loans", cascade="all, delete-orphan")
 
     '''
     str for static type checkers (pylance,etc)

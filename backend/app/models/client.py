@@ -19,4 +19,4 @@ class Client(Base):
     country: Mapped[str] = mapped_column(String, nullable=False)
     risk_rating: Mapped[str] = mapped_column(String, nullable=False)
 
-    loan: Mapped["Loan"] = relationship("Loan", back_populates="client")
+    loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="client")

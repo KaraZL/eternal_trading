@@ -19,6 +19,6 @@ class TradeOrder(Base):
     quantity: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=4), nullable=False)
     limit_price: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=4), nullable=False)
     currency: Mapped[str] = mapped_column(String, nullable=False)
-    status: Mapped[str] = mapped_column(String, nullable=False)
+    status: Mapped[str] = mapped_column(String, nullable=False, default="pending")
 
     book: Mapped["Book"] = relationship("Book", back_populates="trade_orders")

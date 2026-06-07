@@ -4,9 +4,11 @@ from app.models.position import Position
 from sqlalchemy.orm import Session
 
 def create_position(db: Session, position: PositionRequest) -> PositionResponse:
+    db_book = db.query(Position).filter(Position.book_id == position.book_id).first()
+    if not db_book is None:
+        raise ValueError(f"Book with id {position.book_id} does not exist.")
     
     db_position = Position(
-        id=None,
         book_id=position.book_id,
         asset_type=position.asset_type,
         asset_name=position.asset_name,
