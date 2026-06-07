@@ -6,6 +6,8 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.loan import Loan
+    from app.models.position import Position
+    from app.models.trade_order import TradeOrder
 
 class Book(Base):
     """Represents a book in the system, with a relationship to the Loan model."""
@@ -16,3 +18,5 @@ class Book(Base):
     currency: Mapped[str] = mapped_column(String, nullable=False)
 
     loan: Mapped[list["Loan"]] = relationship("Loan", back_populates="book")
+    position: Mapped[list["Position"]] = relationship("Position", back_populates="book")
+    trade_orders: Mapped[list["TradeOrder"]] = relationship("TradeOrder", back_populates="book")

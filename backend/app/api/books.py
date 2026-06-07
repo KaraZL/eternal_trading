@@ -5,7 +5,9 @@ from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from ..schemas.book import BookRequest, BookResponse
+from ..schemas.trade_order import TradeOrderResponse
 from ..services.book_service import create_book, get_book, list_books
+from ..services.trade_order_service import list_all_trade_order_by_book
 
 router = APIRouter(prefix="/api/books", tags=["books"])
 
@@ -29,3 +31,11 @@ async def get_book_route(book_id: str, db: Session = Depends(get_db)) -> BookRes
     if book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     return book
+
+@router.get("/{book_id}/trade-orders", response_class=list[TradeOrderResponse])
+async def list_trade_orders_by_book_route(book_id: str, db: Session = Depends(get_db)):
+    db_trades = list_all_trade_order_by_book(db, book_id)
+    if not db_trades:
+        raise HTTPException(status_code=404, detail="Traders not found for the given book")
+    
+    return db_trades
