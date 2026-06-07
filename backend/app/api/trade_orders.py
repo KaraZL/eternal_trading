@@ -7,7 +7,7 @@ from app.db.database import get_db
 
 from sqlalchemy.orm import Session
 
-from backend.app.services.book_service import get_book
+from app.services.book_service import get_book
 
 
 router = APIRouter()

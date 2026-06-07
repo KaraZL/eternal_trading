@@ -32,7 +32,7 @@ async def get_book_route(book_id: str, db: Session = Depends(get_db)) -> BookRes
         raise HTTPException(status_code=404, detail="Book not found")
     return book
 
-@router.get("/{book_id}/trade-orders", response_class=list[TradeOrderResponse])
+@router.get("/{book_id}/trade-orders", response_model=list[TradeOrderResponse])
 async def list_trade_orders_by_book_route(book_id: str, db: Session = Depends(get_db)):
     db_trades = list_all_trade_order_by_book(db, book_id)
     if not db_trades:
