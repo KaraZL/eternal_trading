@@ -4,6 +4,7 @@ from app.models.position import Position
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from datetime import datetime, timezone
+from uuid import UUID
 
 def create_trade_order(db: Session, trade_order: TradeOrderRequest) -> TradeOrderResponse:
     db_trade_order = TradeOrder(
@@ -29,7 +30,7 @@ def list_all_trade_order_by_book(db: Session, book_id: str) -> list[TradeOrderRe
     db_trade = db.query(TradeOrder).filter(TradeOrder.book_id == book_id).all()
     return [TradeOrderResponse.model_validate(trade) for trade in db_trade]
 
-def execute_trade_order(order_id: str, trade_order_execution: TradeOrderExecutionRequest, db: Session) -> TradeOrderResponse:
+def execute_trade_order(order_id: UUID, trade_order_execution: TradeOrderExecutionRequest, db: Session) -> TradeOrderResponse:
     db_order = db.query(TradeOrder).filter(TradeOrder.id == order_id).first()
     if db_order is None:
         raise HTTPException(status_code=404, detail="Trade order not found.")
