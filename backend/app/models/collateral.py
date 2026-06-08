@@ -20,4 +20,4 @@ class Collateral(Base):
     currency: Mapped[str] = mapped_column(String, nullable=False)
     haircut: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2), nullable=False)
 
-    loans: Mapped["Loan"] = relationship("Loan", back_populates="collateral_items")
+    loan: Mapped["Loan"] = relationship("Loan", back_populates="collateral_items")

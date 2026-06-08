@@ -17,14 +17,11 @@ async def create_position_route(request: PositionRequest, db: Session = Depends(
 async def list_positions_router(db: Session = Depends(get_db)) -> list[PositionResponse]:
     return list_positions(db)
 
-@router.get("/{book_id}/positions", response_model=list[PositionResponse])
+@router.get("/{book_id}", response_model=list[PositionResponse])
 async def list_positions_by_book_router(book_id: UUID, db: Session = Depends(get_db)) -> list[PositionResponse]:
     db_book = get_book(db, book_id)
     if db_book is None:
         raise HTTPException(status_code=404, detail="Book not found.")
 
-    db_positions = list_positions_by_book(db, book_id)
-    if not db_positions:
-        raise HTTPException(status_code=404, detail="No positions for this book.")
-    
+    db_positions = list_positions_by_book(db, book_id) 
     return db_positions

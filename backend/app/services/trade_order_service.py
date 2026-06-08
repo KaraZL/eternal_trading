@@ -37,12 +37,14 @@ def execute_trade_order(order_id: str, trade_order_execution: TradeOrderExecutio
     if db_order.status != "pending":
         raise HTTPException(status_code=400, detail=f"The trade order couldn't be executed because the status is : {db_order.status}")
     
-    db_position = db.query(Position).filter(TradeOrder.book_id == db_order.book_id,
-                                            TradeOrder.asset_name == db_order.asset_name,
-                                            TradeOrder.asset_type == db_order.asset_type,
-                                            TradeOrder.currency == db_order.currency).first()
+    db_position = db.query(Position).filter(Position.book_id == db_order.book_id,
+                                            Position.asset_name == db_order.asset_name,
+                                            Position.asset_type == db_order.asset_type,
+                                            Position.currency == db_order.currency).first()
     
-    if db_order.side == "buy":
+    side = db_order.side.lower()
+    
+    if side == "buy":
         if db_position is None:
             db_position = Position(
                 book_id = db_order.book_id,
@@ -57,7 +59,7 @@ def execute_trade_order(order_id: str, trade_order_execution: TradeOrderExecutio
             db_position.quantity += db_order.quantity
             db_position.market_price = trade_order_execution.execution_price
     
-    elif db_order.size == "sell":
+    elif side == "sell":
         if db_position is None:
             raise HTTPException(status_code=400, detail="Cannot sell because no matching positions exists.")
         

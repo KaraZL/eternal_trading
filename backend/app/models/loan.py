@@ -26,7 +26,7 @@ class Loan(Base):
 
     client: Mapped["Client"] = relationship("Client", back_populates="loans")
     book: Mapped["Book"] = relationship("Book", back_populates="loans")
-    collateral_items: Mapped[list["Collateral"]] = relationship("Collateral", back_populates="loans", cascade="all, delete-orphan")
+    collateral_items: Mapped[list["Collateral"]] = relationship("Collateral", back_populates="loan", cascade="all, delete-orphan")
 
     '''
     str for static type checkers (pylance,etc)

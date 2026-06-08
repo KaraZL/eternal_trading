@@ -1,12 +1,14 @@
 from decimal import Decimal
 from app.schemas.position import PositionRequest, PositionResponse
 from app.models.position import Position
+from app.models.book import Book
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 
 def create_position(db: Session, position: PositionRequest) -> PositionResponse:
-    db_book = db.query(Position).filter(Position.book_id == position.book_id).first()
+    db_book = db.query(Book).filter(Book.id == position.book_id).first()
     if not db_book is None:
-        raise ValueError(f"Book with id {position.book_id} does not exist.")
+        raise HTTPException(status_code=404 , detail=f"Book with id {position.book_id} does not exist.")
     
     db_position = Position(
         book_id=position.book_id,
@@ -20,6 +22,7 @@ def create_position(db: Session, position: PositionRequest) -> PositionResponse:
     db.add(db_position)
     db.commit()
     db.refresh(db_position)
+    
     return _to_position_response(db_position)
 
 def list_positions(db: Session) -> list[PositionResponse]:

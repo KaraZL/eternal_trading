@@ -16,7 +16,7 @@ class TradeOrderExecutionRequest(BaseModel):
     execution_price: Decimal
 
 class TradeOrderResponse(BaseModel):
-    id: UUID | None = None
+    id: UUID
     book_id: UUID
     side: str
     asset_type: str

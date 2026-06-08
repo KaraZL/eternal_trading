@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from decimal import Decimal
 from uuid import uuid4
 from sqlalchemy import UUID, ForeignKey, String, Numeric, DateTime
@@ -22,6 +22,6 @@ class TradeOrder(Base):
     currency: Mapped[str] = mapped_column(String, nullable=False)
     status: Mapped[str] = mapped_column(String, nullable=False, default="pending")
     execution_price: Mapped[Decimal] = mapped_column(Numeric(12, 4), nullable=True)
-    executed_at: Mapped[datetime] = mapped_column(DateTime(timezone.utc), nullable=True)
+    executed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
 
     book: Mapped["Book"] = relationship("Book", back_populates="trade_orders")
