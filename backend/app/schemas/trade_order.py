@@ -1,27 +1,32 @@
+from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional
 
 class TradeOrderRequest(BaseModel):
-    book_id: UUID = Field(...)
-    side: str = Field(...)
-    asset_type: str = Field(...)
-    asset_name: str = Field(...)
-    quantity: Decimal = Field(...)
-    limit_price: Decimal = Field(...)
-    currency: str = Field(...)
+    book_id: UUID
+    side: str
+    asset_type: str
+    asset_name: str
+    quantity: Decimal
+    limit_price: Decimal
+    currency: str
+
+class TradeOrderExecutionRequest(BaseModel):
+    execution_price: Decimal
 
 class TradeOrderResponse(BaseModel):
-    id: Optional[UUID] = Field()
-    book_id: UUID = Field(...)
-    side: str = Field(...)
-    asset_type: str = Field(...)
-    asset_name: str = Field(...)
-    quantity: Decimal = Field(...)
-    limit_price: Decimal = Field(...)
-    currency: str = Field(...)
-    status: str = Field(...)
+    id: UUID | None = None
+    book_id: UUID
+    side: str
+    asset_type: str
+    asset_name: str
+    quantity: Decimal
+    limit_price: Decimal
+    currency: str
+    status: str
+    execution_price: Decimal | None = None
+    executed_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
