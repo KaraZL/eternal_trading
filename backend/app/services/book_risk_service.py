@@ -93,7 +93,7 @@ def get_book_risk_summary(
 
     total_eligible_collateral_value = sum(
         (
-            collateral.market_value * (Decimal("1") - collateral.haircut_percentage)
+            collateral.market_value * (Decimal("1") - collateral.haircut)
             for collateral in collateral_items
         ),
         Decimal("0"),

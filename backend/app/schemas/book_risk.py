@@ -10,7 +10,7 @@ class BookRiskResponse(BaseModel):
     position_count: int
     pending_trade_order_count: int
     executed_trade_order_count: int
-    total_loan_exposure: str
+    total_loan_exposure: Decimal
     total_collateral_market_value: Decimal
     total_eligible_collateral_value: Decimal
     weighted_ltv: Decimal | None
