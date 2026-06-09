@@ -3,11 +3,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from uuid import UUID
+from app.schemas.book_risk import BookRiskResponse
+
 from ..db.database import get_db
 from ..schemas.book import BookRequest, BookResponse
 from ..schemas.trade_order import TradeOrderResponse
 from ..services.book_service import create_book, get_book, list_books
 from ..services.trade_order_service import list_all_trade_order_by_book
+from ..services.book_risk_service import get_book_risk_summary
 
 router = APIRouter()
 
@@ -39,3 +43,7 @@ async def list_trade_orders_by_book_route(book_id: str, db: Session = Depends(ge
         raise HTTPException(status_code=404, detail="Traders not found for the given book")
     
     return db_trades
+
+@router.get("/{book_id}/risk-summary", response_model=BookRiskResponse)
+async def get_book_risk_route(book_id: UUID, db: Session = Depends(get_db)) -> BookRiskResponse:
+    return get_book_risk_summary(db, book_id)

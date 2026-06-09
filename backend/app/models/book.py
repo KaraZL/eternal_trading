@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from app.models.loan import Loan
     from app.models.position import Position
     from app.models.trade_order import TradeOrder
+    from app.models.book_risk import BookRisk
 
 class Book(Base):
     """Represents a book in the system, with a relationship to the Loan model."""
