@@ -1,6 +1,6 @@
 """Risk management service for loan LTV calculations."""
 
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 
 
 def calculate_eligible_collateral_value(

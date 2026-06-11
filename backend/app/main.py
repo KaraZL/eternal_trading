@@ -2,6 +2,8 @@
 
 from fastapi import FastAPI
 
+from backend.app.api import scenarios
+
 from .api import clients, books, loans, collateral, risk, positions, trade_orders
 
 app = FastAPI(title="Eternal Lending Platform", version="0.1.0")
@@ -14,6 +16,7 @@ app.include_router(collateral.router, prefix="/api/collateral", tags=["collatera
 app.include_router(risk.router, prefix="/api/risk", tags=["risk"])
 app.include_router(positions.router, prefix="/api/positions", tags=["positions"])
 app.include_router(trade_orders.router, prefix="/api/trade-orders", tags=["trade-orders"])
+app.include_router(scenarios.router, prefix="/api/scenarios", tags=["scenarios"])
 
 
 @app.get("/health")
