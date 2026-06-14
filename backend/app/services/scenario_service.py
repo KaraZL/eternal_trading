@@ -97,7 +97,7 @@ def run_stress_scenario(
 
     base_total_eligible_collateral_value = sum(
         (
-            collateral.market_value * (Decimal("1") - collateral.haircut_percentage)
+            collateral.market_value * (Decimal("1") - collateral.haircut)
             for collateral in collateral_items
         ),
         Decimal("0"),
@@ -120,7 +120,7 @@ def run_stress_scenario(
                 collateral.market_value,
                 _get_shock_for_asset_type(normalized_shocks, collateral.asset_type),
             )
-            * (Decimal("1") - collateral.haircut_percentage)
+            * (Decimal("1") - collateral.haircut)
             for collateral in collateral_items
         ),
         Decimal("0"),
