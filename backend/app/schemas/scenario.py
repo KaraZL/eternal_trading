@@ -1,7 +1,7 @@
 from decimal import Decimal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class StressScenarioRequest(BaseModel):
@@ -10,6 +10,16 @@ class StressScenarioRequest(BaseModel):
         ...,
         description="Mapping of asset_type to shock percentage. Example: equity=-0.20",
     )
+
+    @classmethod
+    @field_validator("asset_type_shocks")
+    def validate_shocks(cls, value: dict[str, Decimal]) -> dict[str, Decimal]:
+        for asset_type, shock in value.items():
+            if shock < Decimal("-1"):
+                raise ValueError(
+                    f"Shock for {asset_type} cannot be less than -1.00"
+                )
+        return value
 
 
 class StressScenarioResponse(BaseModel):
@@ -31,3 +41,4 @@ class StressScenarioResponse(BaseModel):
     stressed_total_position_market_value: Decimal
 
     model_config = ConfigDict(from_attributes=True)
+
