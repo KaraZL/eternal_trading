@@ -11,6 +11,7 @@ from app.models.loan import Loan
 from app.models.collateral import Collateral
 from app.models.position import Position
 from app.models.trade_order import TradeOrder
+from app.models.scenario_run import ScenarioRun
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

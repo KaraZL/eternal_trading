@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from app.models.loan import Loan
     from app.models.position import Position
     from app.models.trade_order import TradeOrder
+    from app.models.scenario_run import ScenarioRun
 
 class Book(Base):
     """Represents a book in the system, with a relationship to the Loan model."""
@@ -20,3 +21,4 @@ class Book(Base):
     loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="book")
     positions: Mapped[list["Position"]] = relationship("Position", back_populates="book")
     trade_orders: Mapped[list["TradeOrder"]] = relationship("TradeOrder", back_populates="book")
+    scenario_runs: Mapped[list["ScenarioRun"]] = relationship("ScenarioRun", back_populates="book", cascade="all, delete-orphan")

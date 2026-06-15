@@ -25,7 +25,8 @@ from app.services import (
     loan_service,
     position_service,
     scenario_service,
-    trade_order_service
+    trade_order_service,
+    scenario_run_service
 )
 
 def create_session_factory() -> sessionmaker:
@@ -63,6 +64,7 @@ class Container(containers.DeclarativeContainer):
     scenario_service = providers.Object(scenario_service)
     trade_order_service = providers.Object(trade_order_service)
     book_risk_service = providers.Object(book_risk_service)
+    scenario_run_service = providers.Object(scenario_run_service)
 
 container = Container()
 container.config.from_dict(

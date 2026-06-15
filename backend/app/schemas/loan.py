@@ -24,3 +24,7 @@ class LoanResponse(BaseModel):
     currency: str = Field(..., description="Currency code (e.g., USD)")
 
     model_config = ConfigDict(from_attributes=True)
+
+    """
+    When using model_validate(...), Pydantic v2 expects input like a dictionary, but sqlalchemy model is not a Dict. It is an object.
+    so model_config = ConfigDict(from_attributes=True) => when validating, read values from object attributes, not only from dictionary keys. """
