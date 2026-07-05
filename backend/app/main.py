@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 #from app.container import container
 from .api import clients, books, loans, collateral, risk, positions, trade_orders, scenarios
+from fastapi.middleware.cors import CORSMiddleware
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Eternal Lending Platform", version="0.1.0")
@@ -16,6 +17,17 @@ def create_app() -> FastAPI:
     app.include_router(positions.router, prefix="/api/positions", tags=["positions"])
     app.include_router(trade_orders.router, prefix="/api/trade-orders", tags=["trade-orders"])
     app.include_router(scenarios.router, prefix="/api/scenarios", tags=["scenarios"])
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+        ],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     @app.get("/health")
     async def health_check() -> dict:
